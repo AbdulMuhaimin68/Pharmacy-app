@@ -25,6 +25,13 @@ class FormulaRepository:
         return query.all()
     
     @staticmethod
+    def get_formula_by_id(session, id=None):
+        query = session.query(Formula)
+        if id:
+            query = query.filter(Formula.id == id)
+        return query.first()
+    
+    @staticmethod
     def update_formula(formula, args):
         formula.description = args.get('description', formula.description)
         formula.disease = args.get('disease', formula.disease)

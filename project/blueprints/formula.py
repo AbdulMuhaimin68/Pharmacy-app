@@ -54,4 +54,3 @@ def update_formula(args: dict):
         return jsonify({"error": "An error occurred while updating the formula"}), HTTPStatus.INTERNAL_SERVER_ERROR
     except ValueError:
         return jsonify({"error": "Invalid formula ID"}), HTTPStatus.BAD_REQUEST
-        

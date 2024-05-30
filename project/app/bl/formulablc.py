@@ -31,7 +31,7 @@ class FormulaBLC:
     def update_formula(args):
         session: Session = FormulaBLC.get_session()
         try:
-            formula = FormulaRepository.get_formula(session,args.get("id"))
+            formula = FormulaRepository.get_formula_by_id(session,args.get("id"))
             if not formula:
                 raise NotFoundException('Formula not Found')
             
