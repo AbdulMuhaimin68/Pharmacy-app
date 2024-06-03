@@ -1,7 +1,6 @@
 from project.app.repositories.formularepository import FormulaRepository
 from project.app.exceptions import NotFoundException
 from project.app.db import db
-from flask import request, jsonify
 from sqlalchemy.orm import session as Session
 
 class FormulaBLC:
@@ -12,7 +11,7 @@ class FormulaBLC:
     @staticmethod
     def add_formula(args: dict):
         session: Session = FormulaBLC.get_session()
-        result = FormulaRepository.adding_formula(session, args)
+        result = FormulaRepository.adding_formula(args,session)
         session.commit()
         return result
     

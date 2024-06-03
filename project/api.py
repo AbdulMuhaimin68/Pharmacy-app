@@ -1,9 +1,11 @@
 from flask import Flask,jsonify
-from project.app.db import db, migrate
+from project.app.db import db
 from project.blueprints.product import bp as product_bp
 from project.blueprints.formula import bp as formula_bp
+from project.blueprints.distributer import bp as ditributer_bp
 from project import config
 import os
+
 
 def create_app():
     app = Flask(__name__)
@@ -12,8 +14,10 @@ def create_app():
         "SQLALCHEMY_DATABASE_URI"
     ] = f"mysql+pymysql://{config.DB_USER}:{config.DB_PWD}@{config.DB_URL}:{config.DB_PORT}/{config.DB_NAME}"
 
+    
+    
     db.init_app(app)
-    # migrate.init_app(app, db) 
+    # migrate.init_app() 
     
     @app.errorhandler(422)
     def webargs_error_handler(err):
@@ -26,7 +30,8 @@ def create_app():
         
     app.register_blueprint(product_bp)
     app.register_blueprint(formula_bp)
-    with app.app_context():
-        db.create_all()
+    app.register_blueprint(ditributer_bp)
+    # with app.app_context():
+    #     db.create_all()
 
     return app

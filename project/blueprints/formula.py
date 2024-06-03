@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify,request
-from project.app.bl.formulablc import FormulaBLC
+from project.app.bl.FormulaBLC import FormulaBLC
 from http import HTTPStatus
 from project.app.schemas.formula import FormulaSchema, UpdateFomulaSchema
 from webargs.flaskparser import use_args
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import SQLAlchemyError
 from project.app.exceptions import DuplicateError,NotFoundException
 from webargs import fields
@@ -15,7 +14,15 @@ bp = Blueprint("formula", __name__)
 @use_args(FormulaSchema(), location="json")
 def add_formula(args: dict):
     """
-    Adding a formula
+    Add a new formula to the database.
+
+    Parameters:
+        args (dict): A dictionary containing the data for the new formula.
+
+    Returns:
+        tuple: A tuple containing JSON response data and HTTP status code.
+               JSON response contains either the newly added formula data
+               or an error message if the operation fails.
     """
     try:
         result = FormulaBLC.add_formula(args)

@@ -7,7 +7,7 @@ from project.app.exceptions import DuplicateError,NotFoundException
 
 class FormulaRepository:
     @staticmethod
-    def adding_formula(session: Session, args: dict):
+    def adding_formula(args: dict, session: Session = db.session):
         formula: Formula = Formula(**args)
         session.add(formula)
         try:
