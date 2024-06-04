@@ -36,8 +36,6 @@ def get_distributer(args:dict):
         distributer_schema = DistributerSchema(many=True)
         result = distributer_schema.dump(result)
         return result
-    except DuplicateError as e:
-        return jsonify({"error": str(e)}), 422
     except Exception as e:
         return jsonify({"error": str(e)}), 422
         
