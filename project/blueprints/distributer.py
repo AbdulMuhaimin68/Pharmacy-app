@@ -1,6 +1,6 @@
 from flask import Blueprint,jsonify
 from webargs.flaskparser import use_args
-from project.app.schemas.distributer import DistributerSchema,UpdateDistributerSchema
+from project.app.schemas.DistributerSchema import DistributerSchema,UpdateDistributerSchema
 from project.app.bl.DistributerBLC import DistributerBLC
 from project.app.exceptions import DuplicateError
 from marshmallow import fields
@@ -54,3 +54,12 @@ def update_distributer(args):
         return jsonify({"error": str(e)}), 422
     
     
+@bp.route('/api/distributer', methods=['DELETE'])
+@use_args({"id":fields.Integer(required=True)}, location='query')
+def delete_distributer(args: dict):
+    """Delete a Distributer"""
+    try:
+        res = DistributerBLC.delete_distributer_by_id(args)
+        return (jsonify({"message": f"Distributer {args['id']} is deleted successfully"}),HTTPStatus.OK)
+    except Exception as e:
+        return jsonify({"message": str(e)}), HTTPStatus.UNPROCESSABLE_ENTITY

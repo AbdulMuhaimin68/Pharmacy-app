@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify,request
 from project.app.bl.FormulaBLC import FormulaBLC
 from http import HTTPStatus
-from project.app.schemas.formula import FormulaSchema, UpdateFomulaSchema
+from project.app.schemas.FormulaSchema import FormulaSchema, UpdateFomulaSchema
 from webargs.flaskparser import use_args
 from sqlalchemy.exc import SQLAlchemyError
 from project.app.exceptions import DuplicateError,NotFoundException
@@ -61,3 +61,14 @@ def update_formula(args: dict):
         return jsonify({"error": "An error occurred while updating the formula"}), HTTPStatus.INTERNAL_SERVER_ERROR
     except ValueError:
         return jsonify({"error": "Invalid formula ID"}), HTTPStatus.BAD_REQUEST
+    
+    
+@bp.route('/api/formula', methods=['DELETE'])
+@use_args({"id":fields.Integer(required=True)}, location='query')
+def delete_formula(args: dict):
+    """Delete a Formula"""
+    try:
+        res = FormulaBLC.delete_formula_by_id(args)
+        return (jsonify({"message": f"Formula {args['id']} is deleted successfully"}),HTTPStatus.OK)
+    except Exception as e:
+        return jsonify({"message": str(e)}), HTTPStatus.UNPROCESSABLE_ENTITY

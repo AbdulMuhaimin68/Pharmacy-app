@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from project.app.bl.ProductBLC import ProductBLC
 from http import HTTPStatus
 from project.app.db import db
-from project.app.schemas.product import ProductSchema
+from project.app.schemas.ProductSchema import ProductSchema
 from webargs.flaskparser import use_args
 from marshmallow import fields
 

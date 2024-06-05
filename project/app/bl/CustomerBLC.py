@@ -10,9 +10,13 @@ class CustomerBLC:
     @staticmethod
     def add_customer(args):
         session:Session = CustomerBLC.get_session()
-        result = CustomerRepository.add_customer(args,session)
-        session.commit()
-        return result
+        try:
+            result = CustomerRepository.add_customer(args,session)
+            session.commit()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
     
     @staticmethod
     def get_customer(args):
@@ -31,6 +35,18 @@ class CustomerBLC:
             if not customer:
                 raise NotFoundException('Customer not found!')
             result = CustomerRepository.update_customer(customer,args)
+            session.commit()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
+        
+        
+    @staticmethod
+    def delete_customer_by_id(args):
+        session: Session = CustomerBLC.get_session()
+        try:
+            result = CustomerRepository.delete_customer(args,session)
             session.commit()
             return result
         except Exception as e:

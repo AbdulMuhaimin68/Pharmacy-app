@@ -36,5 +36,15 @@ class CustomerRepository:
         
         return customer
     
+    def delete_customer(args,session):
+        try:
+            result = session.query(Customer).filter(Customer.id == args.get('id')).first()
+            session.delete(result)
+            session.flush()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
+    
     
         

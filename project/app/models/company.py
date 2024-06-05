@@ -7,7 +7,7 @@ class Company(db.Model):
     address = db.Column(db.String(200), nullable=True)
     contact_number = db.Column(db.String(50), nullable=True)
     email = db.Column(db.String(100), nullable=True)
-    distributor_id = db.Column(db.Integer, db.ForeignKey('distributor.id'), nullable=False)
+    distributor_id = db.Column(db.Integer, db.ForeignKey('distributor.id'))
 
     products = db.relationship('Product', back_populates='company')
     distributor = db.relationship('Distributor', back_populates='companies')

@@ -1,6 +1,7 @@
 from flask import Blueprint,jsonify
-from project.app.schemas.customer import AddCustomerSchema, CustomerSchema,GetCustomerSchema
+from project.app.schemas.CustomerSchema import AddCustomerSchema, CustomerSchema,GetCustomerSchema
 from project.app.bl.CustomerBLC import CustomerBLC
+from http import HTTPStatus
 from marshmallow import fields
 from webargs.flaskparser import use_args
 
@@ -47,6 +48,16 @@ def update_customer(args):
         return jsonify({"message":"Customer Updated succesfully", "result":result})
     except Exception as e:
         return jsonify({"error":str(e)}),422
+    
+@bp.route('/api/customer', methods=['DELETE'])
+@use_args({"id":fields.Integer(required=True)}, location='query')
+def delete_customer(args: dict):
+    """Delete a customer"""
+    try:
+        res = CustomerBLC.delete_customer_by_id(args)
+        return (jsonify({"message": f"Customer {args['id']} is deleted successfully"}),HTTPStatus.OK)
+    except Exception as e:
+        return jsonify({"message": str(e)}), HTTPStatus.UNPROCESSABLE_ENTITY
     
         
     

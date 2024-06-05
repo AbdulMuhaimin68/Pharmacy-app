@@ -37,7 +37,19 @@ class FormulaRepository:
         formula.disease = args.get('disease', formula.disease)
         formula.formula_name = args.get('formula_name', formula.formula_name)
         return formula
+    
+    @staticmethod
+    def delete_formula(args,session):
         
+        try:
+            result = session.query(Formula).filter(Formula.id == args.get('id')).first()
+            session.delete(result)
+            session.flush()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
+            
     
         
         

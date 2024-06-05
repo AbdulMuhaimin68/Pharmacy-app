@@ -38,6 +38,17 @@ class DistributerRepository:
         distributer.contact_number = args.get('contact_number',distributer.contact_number)
         distributer.address = args.get('address',distributer.address)
         return distributer
+    
+    @staticmethod
+    def delete_distributer(args, session):
+        try:
+            result = session.query(Distributor).filter(Distributor.id == args.get('id')).first()
+            session.delete(result)
+            session.flush()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
         
     
         

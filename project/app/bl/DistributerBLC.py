@@ -39,6 +39,19 @@ class DistributerBLC:
             session.rollback()
             raise e
         
+    @staticmethod
+    def delete_distributer_by_id(args):
+        session: Session = DistributerBLC.get_session()
+        try:
+            result = DistributerRepository.delete_distributer(args,session)
+            session.commit()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
+        
+        
+        
         
          
         

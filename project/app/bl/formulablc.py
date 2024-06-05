@@ -40,6 +40,17 @@ class FormulaBLC:
         except Exception as e:
             session.rollback()
             raise e
+    @staticmethod
+    def delete_formula_by_id(args):
+        session: Session = FormulaBLC.get_session()
+        try:
+            result = FormulaRepository.delete_formula(args,session)
+            session.commit()
+            return result
+        except Exception as e:
+            session.rollback()
+            raise e
+        
         
         
     
