@@ -10,4 +10,5 @@ class Stock(db.Model):
     expiry_date = db.Column(db.Date, nullable=True)
     entry_date = db.Column(db.Date, default=datetime.utcnow, nullable=False)
 
+    orders = db.relationship('Order', secondary='stock_order', back_populates='stocks')
     product = db.relationship('Product', back_populates='stocks')

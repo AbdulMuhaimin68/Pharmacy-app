@@ -15,4 +15,3 @@ class Product(db.Model):
     stocks = db.relationship('Stock', back_populates='product')
     company = db.relationship('Company', back_populates='products')
     distributor = db.relationship('Distributor', back_populates='products')
-    orders = db.relationship('Order', secondary='product_order', back_populates='products')

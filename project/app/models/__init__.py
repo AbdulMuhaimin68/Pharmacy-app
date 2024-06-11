@@ -4,5 +4,5 @@ from .stock import Stock
 from .company import Company
 from .distributor import Distributor
 from .order import Order
-from .product_order import ProductOrder
+from .stock_order import StockOrder
 from .customer import Customer

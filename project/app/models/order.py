@@ -9,5 +9,5 @@ class Order(db.Model):
     discount = db.Column(db.Float, nullable=True)
     total_amount = db.Column(db.Float, nullable=False)
     
-    products = db.relationship('Product', secondary='product_order', back_populates='orders')
+    stocks = db.relationship('Stock', secondary='stock_order', back_populates='orders')
     customer = db.relationship('Customer', back_populates='orders')
