@@ -5,6 +5,7 @@ from project.app.db import db
 
 
 class CompanyBLC:
+    # Better to have this function in CompanyRepository
     def get_session():
         return db.session
     

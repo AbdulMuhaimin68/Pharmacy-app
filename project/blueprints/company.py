@@ -5,6 +5,7 @@ from project.app.exceptions import NotFoundException
 from http import HTTPStatus
 from project.app.bl.CompanyBLC import CompanyBLC
 from marshmallow import fields
+from sqlalchemy.exc import IntegrityError
 
 
 bp = Blueprint('company',__name__)
@@ -14,13 +15,14 @@ bp = Blueprint('company',__name__)
 @bp.route('/api/company', methods=['POST'])
 @use_args(CompanySchema(), location='json')
 def add_company(args):
-    
     """Adding a company to a Database"""
     try:
         result = CompanyBLC.add_company(args)
         company_schema = CompanySchema()
         result = company_schema.dump(result)
         return jsonify({"message":"Company added succefully","result":result}),201
+    except IntegrityError as e:
+        return jsonify({"Error":e.orig.args[1]}), 422
     except Exception as e:
         return jsonify(str(e)),422
 
