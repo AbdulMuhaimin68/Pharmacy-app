@@ -1,6 +1,12 @@
 from project.app.models.company import Company
+from project.app.db import db
+from sqlalchemy.orm import joinedload
 
 class CompanyRepository:
+    
+    @staticmethod
+    def get_session():
+        return db.session
     
     @staticmethod
     def add_company(args, session):
@@ -16,6 +22,8 @@ class CompanyRepository:
     @staticmethod
     def get_company(session,id=None):
         query = session.query(Company)
+        # query = query.options(joinedload(Company.distributor))
+        
         if id:
             query = query.filter(Company.id == id)
         return query.all()

@@ -2,6 +2,7 @@
 set FLASK_APP=project.app
 set FLASK_ENV=development
 set DEBUG=true
+set JWT_SECRET_KEY="1cb36505e1924ec58aac929c18588f82"
 
 SET DB_NAME=pharmacy
 SET DB_URL=localhost

@@ -14,3 +14,9 @@ class CompanySchema(SQLAlchemyAutoSchema):
     def upper_name(self, data, **kwargs):
         data['name'] = data['name'].title()
         return data
+    
+class GetCompanySchema(CompanySchema):
+    class Meta:
+        exclude = ["distributor_id"]
+        
+    distributor_name = fields.String(attribute="distributor.name")

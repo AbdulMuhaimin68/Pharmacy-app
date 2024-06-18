@@ -1,7 +1,9 @@
 from flask import Blueprint,jsonify
 from webargs.flaskparser import use_args
-from project.app.schemas.CompanySchema import CompanySchema
+from project.app.schemas.CompanySchema import CompanySchema,GetCompanySchema
 from project.app.exceptions import NotFoundException
+from flask_jwt_extended import get_jwt, jwt_required, get_jwt_identity, current_user
+from project.app.decorators import admin_required
 from http import HTTPStatus
 from project.app.bl.CompanyBLC import CompanyBLC
 from marshmallow import fields
@@ -29,11 +31,13 @@ def add_company(args):
 
 @bp.route('/api/company', methods=['GET'])
 @use_args({'id':fields.Integer()},location='query')
+@jwt_required()
+@admin_required
 def get_company(args):
     """Getting a company"""
     try:
         result = CompanyBLC.get_company(args)
-        company_schema = CompanySchema(many=True)
+        company_schema = GetCompanySchema(many=True)
         result = company_schema.dump(result)
         return result,201
     except Exception as e:
