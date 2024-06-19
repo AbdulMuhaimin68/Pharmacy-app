@@ -6,11 +6,15 @@ class ProductRepository:
     
     @staticmethod
     def adding_product(session, args):
-        brand = Product(**args)
-        session.add(brand)
-        session.commit()
-        
-        return "Product added Successfully"
+        try:
+            product:Product = Product(**args)
+            session.add(product)
+            session.flush()
+            return product
+        except Exception as e:
+            session.rollback()
+            raise e
+
 
 
 

@@ -1,6 +1,7 @@
 from project.app.models.user import User
 from flask_jwt_extended import create_access_token
 from project.app.db import db
+from datetime import timedelta
 
 class LoginRepository:
     
@@ -17,5 +18,5 @@ class LoginRepository:
         if not user or not user.check_password(password):
             return {'message': 'Invalid username or password'}
 
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity=username, expires_delta=timedelta(days=30))
         return access_token

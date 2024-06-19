@@ -6,10 +6,7 @@ from project.app.bl.UserBLC import UserBLC
 from flask_jwt_extended import get_jwt, jwt_required, get_jwt_identity, current_user
 from sqlalchemy.exc import IntegrityError
 
-
 bp = Blueprint('user',__name__)
-
-
 
 @bp.route('/api/register', methods=['POST'])
 @use_args(UserSchema(), location='json')
