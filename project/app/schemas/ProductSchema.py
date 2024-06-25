@@ -1,4 +1,10 @@
 from marshmallow import Schema, fields, validate
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from project.app.models.product import Product
+from project.app.schemas.CompanySchema import CompanySchema, GetCompanySchema
+from project.app.schemas.DistributerSchema import DistributerSchema
+from project.app.schemas.FormulaSchema import FormulaSchema
+from marshmallow import post_dump
 
 class ProductSchema(Schema):
     product_name = fields.Str(required=True, validate=validate.Length(max=100, error="Give Shorter Name"))
@@ -8,6 +14,30 @@ class ProductSchema(Schema):
     distribution_id = fields.Int(required=True)
     description = fields.Str()
     
-class GetProductSchema(ProductSchema):
-    class meta:
-        fields = ('product_name', 'formula_id', 'per_pack', 'company_id', 'distribution_id')
+    
+    
+class GetProductSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Product
+        include_fk = False
+        
+    formula = fields.Nested(FormulaSchema)
+    company = fields.Nested(GetCompanySchema)
+    distributor = fields.Nested(DistributerSchema)
+    # stock = fields.Nested()
+    
+    @post_dump
+    def total_qty(self, data, **args):
+        total_qty = sum(dct["quantity"] for dct in data.get("stock")) if data.get("stock") else 0
+        data["total_qty"] = total_qty
+        return data
+    
+class ProductSearchSchema(Schema):
+    search = fields.String(required=False)
+    company_id = fields.Integer(required=False)
+    formula_id = fields.Integer(required=False)
+    distributer_id = fields.Integer(required=False)
+    short_stock = fields.Boolean(required=False)
+    short_expiry = fields.Boolean(required=False)
+    expired = fields.Boolean(required=False)
+    sort = fields.String(required=False, validate=lambda x: x in ['price_asc', 'price_desc'])

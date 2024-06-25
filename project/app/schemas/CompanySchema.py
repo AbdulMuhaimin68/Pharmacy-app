@@ -1,7 +1,7 @@
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from project.app.models.company import Company
 from marshmallow import fields, validate, post_load
-
+from project.app.schemas.DistributerSchema import DistributerSchema
 class CompanySchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Company
@@ -18,5 +18,6 @@ class CompanySchema(SQLAlchemyAutoSchema):
 class GetCompanySchema(CompanySchema):
     class Meta:
         exclude = ["distributor_id"]
+        include_fk = False
         
     distributor_name = fields.String(attribute="distributor.name")

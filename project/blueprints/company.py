@@ -39,7 +39,7 @@ def get_company(args):
         result = CompanyBLC.get_company(args)
         company_schema = GetCompanySchema(many=True)
         result = company_schema.dump(result)
-        return result,201
+        return result,200
     except Exception as e:
         return jsonify({'error':str(e)}),422
     

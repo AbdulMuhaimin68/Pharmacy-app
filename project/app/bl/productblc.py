@@ -1,6 +1,6 @@
 from project.app.repositories.productrepository import ProductRepository
+from sqlalchemy.orm import session as Session
 from project.app.db import db
-from flask import request, jsonify
 
 
 
@@ -11,7 +11,6 @@ class ProductBLC:
     
     @staticmethod
     def add_product(args):
-        breakpoint()
         session = ProductBLC.get_session()
         
         try:
@@ -20,4 +19,14 @@ class ProductBLC:
             return result
         except Exception as e:
             session.rollback()
+            raise e
+        
+    @staticmethod
+    def get_products(args:dict):
+        session:Session = ProductBLC.get_session()
+        
+        try:
+            result = ProductRepository.get_products(args,session=session)
+            return result
+        except Exception as e:
             raise e
