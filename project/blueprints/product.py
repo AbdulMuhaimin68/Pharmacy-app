@@ -1,7 +1,9 @@
 from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required
 from project.app.bl.ProductBLC import ProductBLC
 from http import HTTPStatus
 from project.app.db import db
+from project.app.decorators import admin_required
 from project.app.schemas.ProductSchema import ProductSchema,GetProductSchema,ProductSearchSchema
 from webargs.flaskparser import use_args
 from marshmallow import fields
@@ -25,6 +27,8 @@ def add_product(args):
         return jsonify(str(e)), 422
     
 @bp.route('/api/product', methods=['GET'])
+@jwt_required()
+@admin_required
 @use_args(ProductSearchSchema(), location='json')
 def get_products(args):
     """
