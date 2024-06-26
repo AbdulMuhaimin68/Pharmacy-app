@@ -5,7 +5,7 @@ from project.app.schemas.CompanySchema import CompanySchema, GetCompanySchema
 from project.app.schemas.DistributerSchema import DistributerSchema
 from project.app.schemas.FormulaSchema import FormulaSchema
 from project.app.schemas.StockSchema import StockSchema
-from marshmallow import post_dump
+from marshmallow import post_dump, pre_dump
 
 class ProductSchema(Schema):
     product_name = fields.Str(required=True, validate=validate.Length(max=100, error="Give Shorter Name"))
@@ -25,13 +25,12 @@ class GetProductSchema(SQLAlchemyAutoSchema):
     formula = fields.Nested(FormulaSchema)
     company = fields.Nested(GetCompanySchema)
     distributor = fields.Nested(DistributerSchema)
-    stock = fields.Nested(StockSchema)
-    
+    stocks = fields.Nested(StockSchema(many=True))
+
     @post_dump
     def total_qty(self, data, **args):
-        total_qty = sum(dct["quantity"] for dct in data.get("stock")) if data.get("stock") else 0
+        total_qty = sum(dct["quantity"] for dct in data.get("stocks")) if data.get("stocks") else 0
         data["total_qty"] = total_qty
-        # breakpoint()
         return data
     
 class ProductSearchSchema(Schema):
