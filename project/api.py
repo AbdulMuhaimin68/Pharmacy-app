@@ -13,6 +13,7 @@ from project.blueprints.customer import bp as customer_bp
 from project.blueprints.company import bp as company_bp
 from project.blueprints.order import bp as order_bp
 from project.blueprints.user import bp as user_bp
+from project.blueprints.stock import bp as stock_bp
 
 
 def create_app():
@@ -55,6 +56,7 @@ def create_app():
     app.register_blueprint(company_bp)
     app.register_blueprint(order_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(stock_bp)
     # with app.app_context():
     #     db.create_all()
 
