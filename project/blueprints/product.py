@@ -27,8 +27,8 @@ def add_product(args):
         return jsonify(str(e)), 422
     
 @bp.route('/api/product', methods=['GET'])
-@jwt_required()
-@admin_required
+# @jwt_required()
+# @admin_required
 @use_args(ProductSearchSchema(), location='json')
 def get_products(args):
     """

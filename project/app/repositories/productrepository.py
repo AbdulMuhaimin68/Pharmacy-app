@@ -36,16 +36,19 @@ class ProductRepository:
         if args.get('short_stock'):
             query = query.filter(Product.total_qty < Product.average_quantity)
 
-        if args.get('short_expiry'):
-            current_date = date.today()
-            expiration_threshold = current_date + timedelta(days=180)
-            query = query.join(Product.stocks)
-            query = query.filter(and_(Stock.expiry_date<expiration_threshold, Stock.expiry_date>current_date))
+        current_date = date.today()
+        expiration_threshold = current_date + timedelta(days=180)
 
-        if args.get('expired'):
-            current_date = date.today()
+        if args.get('short_expiry') or args.get('expired'):
             query = query.join(Product.stocks)
-            query = query.filter(Stock.expiry_date < current_date)
+            filters = []
+            
+            if args.get('short_expiry'):
+                filters.append(and_(Stock.expiry_date < expiration_threshold, Stock.expiry_date > current_date))
+            
+            if args.get('expired'):
+                filters.append(Stock.expiry_date < current_date)
+            query = query.filter(or_(*filters))
             
         if args.get('sort'):
             query = query.join(Product.stocks)
