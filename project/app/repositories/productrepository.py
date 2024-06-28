@@ -31,7 +31,7 @@ class ProductRepository:
             query = query.filter(Product.formula_id == args['formula_id'])
         
         if 'distributer_id' in args and args['distributer_id']:
-            query = query.filter(Product.distributer_id == args['distributer_id'])
+            query = query.filter(Product.distribution_id == args['distributer_id'])
 
         if args.get('short_stock'):
             query = query.filter(Product.total_qty < Product.average_quantity)

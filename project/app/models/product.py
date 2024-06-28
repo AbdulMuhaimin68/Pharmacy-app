@@ -27,11 +27,11 @@ class Product(db.Model):
         total = session.query(func.sum(Stock.quantity)).filter(Stock.product_id == self.id).scalar()
         return total if total is not None else 0
     
-    # @total_qty.expression
-    # def total_qty(cls):
-    #     return (
-    #         db.session.query(func.coalesce(func.sum(Stock.quantity), 0))
-    #         .filter(Stock.product_id == cls.id)
-    #         .label("total_qty")
-    #     )
+    @total_qty.expression
+    def total_qty(cls):
+        return (
+            db.session.query(func.coalesce(func.sum(Stock.quantity), 0))
+            .filter(Stock.product_id == cls.id)
+            .label("total_qty")
+        )
         
