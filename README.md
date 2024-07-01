@@ -36,8 +36,8 @@ The Pharmacy Management System is a Flask-based web application designed to mana
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/pharmacy-management-system.git
-    cd pharmacy-management-system
+    git https://github.com/aziz-ullah/Pharmacy-app.git
+    cd Pharmacy-app
     ```
 
 2. Create a virtual environment:
