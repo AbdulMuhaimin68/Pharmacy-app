@@ -12,7 +12,7 @@ class OrderBLC:
     @staticmethod
     def add_order(args: dict):
         session: Session = OrderBLC.get_session()
-        result = OrderRepository.adding_order(args,session)
+        result = OrderRepository.add_order(args,session)
         session.commit()
         return result
     

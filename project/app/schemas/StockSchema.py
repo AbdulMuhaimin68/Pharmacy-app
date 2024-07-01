@@ -4,9 +4,6 @@ from project.app.models.stock import Stock
 
 
 class StockSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Stock
-    
     id = fields.Int(dump_only=True)
     product_id = fields.Int(required=True)
     quantity = fields.Int(required=True)

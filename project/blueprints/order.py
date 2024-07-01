@@ -2,24 +2,25 @@ from flask import Blueprint,jsonify
 from webargs.flaskparser import use_args
 from http import HTTPStatus
 from marshmallow import fields
-from project.app.schemas.OrderSchema import OrderSchema
+from project.app.schemas.OrderSchema import OrderReceiptSchema, OrderSchema,GetOrderSchema
 from project.app.bl.OrderBLC import OrderBLC
 
 bp = Blueprint('order', __name__)
 
 @bp.route('/api/order', methods=['POST'])
 @use_args(OrderSchema(), location='json')
-def add_distributer(args:dict):
+def add_order(args: dict):
     """
-    Add a new Order to the database
+    Endpoint to add a new Order to the database.
     """
     try:
         result = OrderBLC.add_order(args)
-        order_schema = OrderSchema()
-        result = order_schema.dump(result)
-        return jsonify(result),HTTPStatus.CREATED
+        order_receipt_schema = OrderReceiptSchema()
+        serialized_result = order_receipt_schema.dump(result)
+        return jsonify(serialized_result), HTTPStatus.CREATED
+
     except Exception as e:
-        return jsonify(str(e)),422
+        return jsonify(str(e)), 422
     
 
 @bp.route('/api/order', methods=['GET'])
@@ -29,7 +30,7 @@ def get_order(args):
     
     try:
         result = OrderBLC.get_order(args)
-        order_schema = OrderSchema(many=True)
+        order_schema = GetOrderSchema(many=True)
         result = order_schema.dump(result)
         return result
     except Exception as e:
