@@ -10,6 +10,7 @@ from marshmallow import post_dump, pre_dump
 class ProductSchema(Schema):
     product_name = fields.Str(required=True, validate=validate.Length(max=100, error="Give Shorter Name"))
     formula_id = fields.Int(required=True)
+    average_quantity = fields.Int()
     per_pack = fields.Int(required=True)
     company_id = fields.Int(required=True)
     distribution_id = fields.Int(required=True)

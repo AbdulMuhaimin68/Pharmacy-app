@@ -23,6 +23,7 @@ class ReceiptItemSchema(Schema):
 
 class OrderReceiptSchema(Schema):
     customer_id = fields.Int(required=True)
+    customer_name = fields.String()
     total_amount = fields.Float(required=True)
     items = fields.List(fields.Nested(ReceiptItemSchema), required=True)
     

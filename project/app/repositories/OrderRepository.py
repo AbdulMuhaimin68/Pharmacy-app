@@ -63,6 +63,7 @@ class OrderRepository:
     def prepare_receipt(new_order, stock_updates):
         receipt = {
             "customer_id": new_order.customer_id,
+            "customer_name":new_order.customer.name,
             "total_amount": new_order.total_amount,
             "items": []
         }

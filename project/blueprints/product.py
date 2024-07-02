@@ -20,6 +20,8 @@ def add_product(args):
     """
     try:
         result = ProductBLC.add_product(args)
+        product_schema = ProductSchema()
+        result = product_schema.dump(result)
         return jsonify({"message":result}), HTTPStatus.CREATED
     except IntegrityError as ie:
         return {"message": "Foreign key constraint failed", 'error': str(ie)}, 422
