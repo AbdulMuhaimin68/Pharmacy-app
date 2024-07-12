@@ -65,6 +65,7 @@ class OrderRepository:
             "customer_id": new_order.customer_id,
             "customer_name":new_order.customer.name,
             "total_amount": new_order.total_amount,
+            "customer_name": new_order.customer.name,
             "items": []
         }
         
@@ -82,7 +83,7 @@ class OrderRepository:
                 }
             })
         
-        return receipt  # Return the full receipt details 
+        return receipt 
             
     @staticmethod  
     def get_order(session,id=None):

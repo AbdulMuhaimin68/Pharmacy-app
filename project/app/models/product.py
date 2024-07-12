@@ -20,6 +20,7 @@ class Product(db.Model):
     stocks = db.relationship('Stock', back_populates='product')
     company = db.relationship('Company', back_populates='products')
     distributor = db.relationship('Distributor', back_populates='products')
+    product_detail = db.relationship('ProductDetails', uselist=False, back_populates='product')
     
     @hybrid_property
     def total_qty(self):

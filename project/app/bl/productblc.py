@@ -10,13 +10,12 @@ class ProductBLC:
         return db.session
     
     @staticmethod
-    def add_product(args):
+    def add_product(prod):
         session = ProductBLC.get_session()
         
         try:
-            result = ProductRepository.adding_product(session, args)
+            ProductRepository.adding_product(session, prod)
             session.commit()
-            return result
         except Exception as e:
             session.rollback()
             raise e

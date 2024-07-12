@@ -8,22 +8,24 @@ from project.app.schemas.ProductSchema import ProductSchema,GetProductSchema,Pro
 from webargs.flaskparser import use_args
 from marshmallow import fields
 from sqlalchemy.exc import IntegrityError
-
+import traceback
+from project.app.models.product import Product
 bp = Blueprint("product", __name__)
 
 
 @bp.route('/api/product', methods=['POST'])
 @use_args(ProductSchema(), location="json")
-def add_product(args):
+def add_product(prod: Product):
     """
     Adding a product
     """
     try:
-        result = ProductBLC.add_product(args)
+        ProductBLC.add_product(prod)
         product_schema = ProductSchema()
-        result = product_schema.dump(result)
+        result = product_schema.dump(prod)
         return jsonify({"message":result}), HTTPStatus.CREATED
     except IntegrityError as ie:
+        print(traceback.print_exc())
         return {"message": "Foreign key constraint failed", 'error': str(ie)}, 422
     except Exception as e:
         return jsonify(str(e)), 422
@@ -50,7 +52,7 @@ def get_products(args):
     except KeyError as e:
         return jsonify(error=str(e)), 404
     except Exception as e:
-        import traceback
+        
         print(traceback.print_exc())
         return jsonify(error=str(e)), 500
     

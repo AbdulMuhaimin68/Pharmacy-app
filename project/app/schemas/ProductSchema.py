@@ -5,9 +5,12 @@ from project.app.schemas.CompanySchema import CompanySchema, GetCompanySchema
 from project.app.schemas.DistributerSchema import DistributerSchema
 from project.app.schemas.FormulaSchema import FormulaSchema
 from project.app.schemas.StockSchema import StockSchema
-from marshmallow import post_dump, pre_dump
+from project.app.schemas.ProductDetailSchema import ProductDetailSchema
+from marshmallow import post_dump, pre_dump, post_load
+from project.app.models.product_details import ProductDetails
 
 class ProductSchema(Schema):
+    id = fields.Int(dump_only=True)
     product_name = fields.Str(required=True, validate=validate.Length(max=100, error="Give Shorter Name"))
     formula_id = fields.Int(required=True)
     average_quantity = fields.Int()
@@ -15,7 +18,15 @@ class ProductSchema(Schema):
     company_id = fields.Int(required=True)
     distribution_id = fields.Int(required=True)
     description = fields.Str()
+    product_detail = fields.Nested(ProductDetailSchema, only=['sku'])
     
+    @post_load
+    def obj_convertion(self, data, **kwargs):
+        if "product_detail" in data.keys():
+            data['product_detail'] = ProductDetails(**data['product_detail'])
+            
+        product = Product(**data)
+        return product
     
     
 class GetProductSchema(SQLAlchemyAutoSchema):

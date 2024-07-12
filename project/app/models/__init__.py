@@ -6,3 +6,4 @@ from .distributor import Distributor
 from .order import Order
 from .stock_order import StockOrder
 from .customer import Customer
+from .product_details import ProductDetails

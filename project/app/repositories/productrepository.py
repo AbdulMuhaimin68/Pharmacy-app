@@ -7,12 +7,10 @@ from sqlalchemy import and_, or_, select, func, asc, desc
 class ProductRepository:
     
     @staticmethod
-    def adding_product(session, args):
+    def adding_product(session, product):
         try:
-            product:Product = Product(**args)
             session.add(product)
             session.flush()
-            return product
         except Exception as e:
             session.rollback()
             raise e
